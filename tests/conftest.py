@@ -80,7 +80,7 @@ def mock_database(small_vocabulary):
     # Fit a TF-IDF transformer
     tfidf_transformer = TfidfTransformer(smooth_idf=True, use_idf=True)
     tfidf_transformer.fit(tf_vectors)
-    tfidf_vectors = tfidf_transformer.transform(tf_vectors)
+    tfidf_vectors = scipy.sparse.csr_matrix(tfidf_transformer.transform(tf_vectors))
 
     # Create mock image paths
     indexed_paths = [f"image_{i}.jpg" for i in range(5)]

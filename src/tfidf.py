@@ -77,7 +77,7 @@ def build_tfidf_vectors(
 
     print("Database indexing complete.")
 
-    return tfidf_vectors_matrix, tfidf_transformer, indexed_paths
+    return scipy.sparse.csr_matrix(tfidf_vectors_matrix), tfidf_transformer, indexed_paths
 
 
 def transform_query_vector(
@@ -97,7 +97,7 @@ def transform_query_vector(
     Returns:
         TF-IDF weighted query vector (sparse matrix, 1 x k)
     """
-    return tfidf_transformer.transform(tf_vector)
+    return scipy.sparse.csr_matrix(tfidf_transformer.transform(tf_vector))
 
 
 def compute_similarities(

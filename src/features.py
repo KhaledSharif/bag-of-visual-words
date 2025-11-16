@@ -12,7 +12,7 @@ def create_sift_detector() -> cv2.SIFT:
     Returns:
         Configured SIFT detector instance
     """
-    return cv2.SIFT_create()
+    return cv2.SIFT_create()  # type: ignore[attr-defined]
 
 
 def create_matcher() -> cv2.BFMatcher:
@@ -51,5 +51,5 @@ def extract_descriptors(image: np.ndarray, sift: cv2.SIFT) -> Tuple[List, Option
     Returns:
         Tuple of (keypoints, descriptors). Descriptors will be None if no keypoints found.
     """
-    keypoints, descriptors = sift.detectAndCompute(image, None)
+    keypoints, descriptors = sift.detectAndCompute(image, None)  # type: ignore[arg-type]
     return list(keypoints), descriptors

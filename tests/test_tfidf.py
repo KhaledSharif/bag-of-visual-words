@@ -101,8 +101,8 @@ def test_build_tfidf_vectors_success(temp_dir):
 
     # Verify outputs
     assert scipy.sparse.issparse(tfidf_vectors), "TF-IDF vectors should be sparse matrix"
-    assert tfidf_vectors.shape[0] == 3, "Should have 3 image vectors"
-    assert tfidf_vectors.shape[1] == 10, "Should have 10 dimensions (k=10)"
+    assert tfidf_vectors.shape[0] == 3, "Should have 3 image vectors"  # type: ignore[index]
+    assert tfidf_vectors.shape[1] == 10, "Should have 10 dimensions (k=10)"  # type: ignore[index]
     assert isinstance(tfidf_transformer, TfidfTransformer), "Should return a TfidfTransformer"
     assert len(indexed_paths) == 3, "Should have 3 indexed paths"
     assert indexed_paths == image_paths, "Indexed paths should match input paths"
@@ -162,7 +162,7 @@ def test_build_tfidf_vectors_mixed_valid_invalid(temp_dir):
     )
 
     # Should only index the 2 valid images
-    assert tfidf_vectors.shape[0] == 2, "Should have 2 image vectors (invalid skipped)"
+    assert tfidf_vectors.shape[0] == 2, "Should have 2 image vectors (invalid skipped)"  # type: ignore[index]
     assert len(indexed_paths) == 2, "Should have 2 indexed paths"
     assert valid_paths[0] in indexed_paths
     assert valid_paths[1] in indexed_paths
@@ -192,7 +192,7 @@ def test_build_tfidf_vectors_single_image(temp_dir):
     )
 
     # Verify single image was indexed
-    assert tfidf_vectors.shape[0] == 1
+    assert tfidf_vectors.shape[0] == 1  # type: ignore[index]
     assert len(indexed_paths) == 1
     assert indexed_paths[0] == image_path
 
