@@ -55,7 +55,7 @@ def build_vocabulary(
         if descriptors is not None:
             bow_trainer.add(descriptors)
 
-    if bow_trainer.getDescriptorsCount() == 0:
+    if bow_trainer.descriptorsCount() == 0:
         raise ValueError("No descriptors found. Check image paths and image content.")
 
     print("\nClustering descriptors... (This may take a while)")

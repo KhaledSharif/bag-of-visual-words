@@ -1,5 +1,6 @@
 """Tests for TF-IDF transformation and similarity computation."""
 
+import pytest
 import numpy as np
 import scipy.sparse
 from sklearn.feature_extraction.text import TfidfTransformer
@@ -50,8 +51,8 @@ def test_compute_similarities():
     assert similarities[1] == pytest.approx(0.0, abs=1e-5)  # Orthogonal
     assert similarities[2] == pytest.approx(1.0, abs=1e-5)  # Scaled
 
-    # All similarities should be in range [0, 1]
-    assert all(0 <= s <= 1 for s in similarities)
+    # All similarities should be in range [0, 1] (with small tolerance for floating point errors)
+    assert all(0 - 1e-10 <= s <= 1 + 1e-10 for s in similarities)
 
 
 def test_compute_similarities_returns_array():

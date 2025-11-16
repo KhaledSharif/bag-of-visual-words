@@ -37,7 +37,7 @@ def extract_keypoints(image: np.ndarray, sift: cv2.SIFT) -> List:
         List of detected keypoints
     """
     keypoints = sift.detect(image, None)
-    return keypoints
+    return list(keypoints)
 
 
 def extract_descriptors(image: np.ndarray, sift: cv2.SIFT) -> Tuple[List, Optional[np.ndarray]]:
@@ -52,4 +52,4 @@ def extract_descriptors(image: np.ndarray, sift: cv2.SIFT) -> Tuple[List, Option
         Tuple of (keypoints, descriptors). Descriptors will be None if no keypoints found.
     """
     keypoints, descriptors = sift.detectAndCompute(image, None)
-    return keypoints, descriptors
+    return list(keypoints), descriptors
