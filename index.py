@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Build a BoVW visual index from a directory of images."""
 
 import argparse

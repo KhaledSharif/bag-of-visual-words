@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Query a BoVW database for similar images."""
 
 import argparse
