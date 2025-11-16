@@ -60,3 +60,39 @@ def test_database_from_dict(mock_database):
     assert new_db.k == mock_database.k
     assert len(new_db) == len(mock_database)
     assert new_db.indexed_paths == mock_database.indexed_paths
+
+
+def test_load_corrupted_database_raises_error(temp_dir):
+    """Test loading a corrupted (non-pickle) file raises ValueError."""
+    # Create a corrupted database file (not a valid pickle)
+    corrupted_path = os.path.join(temp_dir, "corrupted.db")
+    with open(corrupted_path, "w") as f:
+        f.write("This is not a valid pickle file")
+
+    # Should raise ValueError with descriptive message
+    with pytest.raises(ValueError) as exc_info:
+        load_database(corrupted_path)
+
+    assert "Could not load database file" in str(exc_info.value)
+
+
+def test_load_malformed_database_missing_keys(temp_dir):
+    """Test loading a database with missing required keys raises ValueError."""
+    import pickle
+
+    # Create a database file with incomplete data (missing keys)
+    malformed_path = os.path.join(temp_dir, "malformed.db")
+    incomplete_data = {
+        'vocabulary': None,
+        # Missing 'tfidf_vectors', 'tfidf_transformer', 'indexed_paths', 'k'
+    }
+
+    with open(malformed_path, "wb") as f:
+        pickle.dump(incomplete_data, f)
+
+    # Should raise ValueError about missing key
+    with pytest.raises(ValueError) as exc_info:
+        load_database(malformed_path)
+
+    assert "Database file is malformed" in str(exc_info.value)
+    assert "Missing key" in str(exc_info.value)

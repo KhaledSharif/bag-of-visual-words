@@ -69,3 +69,28 @@ def test_build_vocabulary_no_features_raises_error(temp_dir, sift_detector):
     # Should raise ValueError when no descriptors are found
     with pytest.raises(ValueError, match="No descriptors found"):
         build_vocabulary(image_paths, k=5, sift=sift_detector)
+
+
+def test_build_vocabulary_with_invalid_images(temp_dir, sift_detector):
+    """Test vocabulary building with a mix of valid and invalid images."""
+    # Create valid images
+    image_paths = []
+    for i in range(3):
+        img = np.random.randint(0, 256, (100, 100), dtype=np.uint8)
+        cv2.rectangle(img, (20 + i*5, 20), (80, 80), 255, 2)
+        path = os.path.join(temp_dir, f"valid_image_{i}.png")
+        cv2.imwrite(path, img)
+        image_paths.append(path)
+
+    # Create invalid image file
+    invalid_path = os.path.join(temp_dir, "invalid.jpg")
+    with open(invalid_path, "w") as f:
+        f.write("not a valid image")
+    image_paths.insert(1, invalid_path)  # Insert in the middle
+
+    # Build vocabulary - should skip invalid image and succeed
+    vocabulary = build_vocabulary(image_paths, k=5, sift=sift_detector, limit=None)
+
+    # Vocabulary should still be built from valid images
+    assert vocabulary.shape == (5, 128)
+    assert vocabulary.dtype == np.float32
